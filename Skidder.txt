@@ -1,0 +1,365 @@
+if getgenv().Setting.WhiteScreen == true then
+	    game:GetService("RunService"):Set3dRenderingEnabled(false)
+elseif getgenv().Setting.WhiteScreen == false then
+	    game:GetService("RunService"):Set3dRenderingEnabled(true)
+end
+
+	function fpsboost()
+		pcall(function()
+		local decalsyeeted = true -- Leaving this on makes games look shitty but the fps goes up by at least 20.
+		local g = game
+		local w = g.Workspace
+		local l = g.Lighting
+		local t = w.Terrain
+		t.WaterWaveSize = 0
+		t.WaterWaveSpeed = 0
+		t.WaterReflectance = 0
+		t.WaterTransparency = 0
+		l.GlobalShadows = false
+		l.FogEnd = 9e9
+		l.Brightness = 0
+		settings().Rendering.QualityLevel = "Level01"
+		for i, v in pairs(g:GetDescendants()) do
+			if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then 
+					v.Material = "Plastic"
+					v.Reflectance = 0
+					--v.CanCollide = false
+			elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
+					v.Transparency = 1
+			elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+					v.Lifetime = NumberRange.new(0)
+			elseif v:IsA("Explosion") then
+					v.BlastPressure = 1
+					v.BlastRadius = 1
+			elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
+					v.Enabled = false
+			elseif v:IsA("MeshPart") then
+					v.Material = "Plastic"
+					v.Reflectance = 0
+					v.TextureID = 10385902758728957    
+			end
+		end
+		for i, e in pairs(l:GetChildren()) do
+			if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+					e.Enabled = false
+			end
+		end
+		for i, v in pairs(game:GetService("Workspace").Camera:GetDescendants()) do
+			if v.Name == ("Water;") then
+				v.Transparency = 1
+				v.Material = "Plastic"
+			end
+		end
+		end)
+		end
+
+if getgenv().Setting.FpsBoost == true then
+	fpsboost()
+end
+
+AutoFarmChest = true
+   spawn(function()
+        while true do 
+                if AutoFarmChest then
+                    for i,v in pairs(game:GetService("Workspace"):GetChildren()) do 
+                        if v.Name:find("Chest") then
+                        	if (game:GetService("Workspace"):FindFirstChild(v.Name)) then
+                            	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+                            	if string.find(v.Name, "Chest") and v:IsA("TouchTransmitter") then
+								   firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+							    end
+                            end
+                        end
+						if not (game:GetService("Workspace"):FindFirstChild("Chest1") or game:GetService("Workspace"):FindFirstChild("Chest2") or game:GetService("Workspace"):FindFirstChild("Chest3")) then 
+                            starthop = true
+                        end
+                    end
+                end
+            task.wait()
+        end
+    end)
+    spawn(function()
+        while true do 
+                if AutoFarmChest and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Head") then
+                	wait(getgenv().Setting.TimeReset)
+					if getgenv().Setting.Team == "Pirates" or getgenv().Setting.Team == nil then
+                		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
+						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Marines")
+					elseif getgenv().Setting.Team == "Marines" then
+						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Marines")
+						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
+					end
+                end
+			task.wait()
+        end
+    end)
+    spawn(function()
+	    while true do
+	        if starthop then
+	          	HopServer()
+	        end
+	        wait()
+	    end
+	end)
+	function HopServer(bO)
+	    if not bO then
+	        bO = 10
+	    end
+	    ticklon = tick()
+	    repeat
+	        task.wait()
+	    until tick() - ticklon >= 1
+	    local function Hop()
+	        for r = 1, math.huge do
+	            if ChooseRegion == nil or ChooseRegion == "" then
+	                ChooseRegion = "Singapore"
+	            else
+	                game:GetService("Players").LocalPlayer.PlayerGui.ServerBrowser.Frame.Filters.SearchRegion.TextBox.Text =
+	                    ChooseRegion
+	            end
+	            local bP = game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer(r)
+	            for k, v in pairs(bP) do
+	                if k ~= game.JobId and v["Count"] < bO then
+	                   game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport", k)
+	                end
+	            end
+	        end
+	        return false
+	    end
+	    if not getgenv().Loaded then
+	        local function bQ(v)
+	            if v.Name == "ErrorPrompt" then
+	                if v.Visible then
+	                    if v.TitleFrame.ErrorTitle.Text == "Teleport Failed" then
+	                        HopServer()
+	                        v.Visible = false
+	                    end
+	                end
+	                v:GetPropertyChangedSignal("Visible"):Connect(
+	                    function()
+	                        if v.Visible then
+	                            if v.TitleFrame.ErrorTitle.Text == "Teleport Failed" then
+	                                HopServer()
+	                                v.Visible = false
+	                            end
+	                        end
+	                    end
+	                )
+	            end
+	        end
+	        for k, v in pairs(game.CoreGui.RobloxPromptGui.promptOverlay:GetChildren()) do
+	            bQ(v)
+	        end
+	        game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(bQ)
+	        getgenv().Loaded = true
+	    end
+	    while not Hop() do
+	        wait()
+	    end
+	end
+
+spawn(function()
+	while wait() do
+		if getgenv().Setting.ModeFarm.StopItemLegendary == true then
+			if game.Players.LocalPlayer.Backpack:FindFirstChild("Fist of Darkness") or game.Players.LocalPlayer.Character:FindFirstChild("Fist of Darkness") or game.Players.LocalPlayer.Backpack:FindFirstChild("God's Chalice") or game.Players.LocalPlayer.Character:FindFirstChild("God's Chalice") then
+				AutoFarmChest = false
+			end
+		end
+	end
+end)
+   
+   local Converted = {
+	["_ScreenGui"] = Instance.new("ScreenGui");
+	["_Frame"] = Instance.new("Frame");
+	["_Frame1"] = Instance.new("Frame");
+	["_UICorner"] = Instance.new("UICorner");
+	["_XesterLogo"] = Instance.new("ImageLabel");
+	["_UICorner1"] = Instance.new("UICorner");
+	["_Frame2"] = Instance.new("Frame");
+	["_UICorner2"] = Instance.new("UICorner");
+	["_Time"] = Instance.new("TextLabel");
+	["_TextLabel"] = Instance.new("TextLabel");
+	["_Frame3"] = Instance.new("Frame");
+	["_UICorner3"] = Instance.new("UICorner");
+	["_Frame4"] = Instance.new("Frame");
+	["_UICorner4"] = Instance.new("UICorner");
+	["_Stop"] = Instance.new("TextButton");
+	["_UICorner5"] = Instance.new("UICorner");
+	["_Frame5"] = Instance.new("Frame");
+	["_UICorner6"] = Instance.new("UICorner");
+	["_Start"] = Instance.new("TextButton");
+	["_UICorner7"] = Instance.new("UICorner");
+	["_UICorner8"] = Instance.new("UICorner");
+	["_Frame6"] = Instance.new("Frame");
+	["_UICorner9"] = Instance.new("UICorner");
+	["_TextLabel1"] = Instance.new("TextLabel");
+	["_UICorner10"] = Instance.new("UICorner");
+	["_Frame7"] = Instance.new("Frame");
+	["_UICorner11"] = Instance.new("UICorner");
+	["_XesterLogo1"] = Instance.new("ImageLabel");
+	["_UICorner12"] = Instance.new("UICorner");
+	["_TextLabel2"] = Instance.new("TextLabel");
+	["_UICorner13"] = Instance.new("UICorner");
+}
+
+-- Properties:
+
+Converted["_ScreenGui"].Parent = game:GetService("CoreGui")
+
+Converted["_Frame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Frame"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame"].BorderSizePixel = 0
+Converted["_Frame"].Position = UDim2.new(0.228360951, 0, 0.333333343, 0)
+Converted["_Frame"].Size = UDim2.new(0, 362, 0, 173)
+Converted["_Frame"].Parent = Converted["_ScreenGui"]
+Converted["_Frame"].Active = true
+Converted["_Frame"].Draggable = true
+Converted["_Frame"].Visible = true
+
+Converted["_Frame1"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame1"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame1"].BorderSizePixel = 0
+Converted["_Frame1"].Position = UDim2.new(0.00821917783, 0, 0.0159820374, 0)
+Converted["_Frame1"].Size = UDim2.new(0, 356, 0, 167)
+Converted["_Frame1"].Parent = Converted["_Frame"]
+
+Converted["_UICorner"].Parent = Converted["_Frame1"]
+
+Converted["_XesterLogo"].Image = "rbxassetid://16161818145"
+Converted["_XesterLogo"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_XesterLogo"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_XesterLogo"].BorderSizePixel = 0
+Converted["_XesterLogo"].Position = UDim2.new(0.0337078646, 0, 0.107784428, 0)
+Converted["_XesterLogo"].Size = UDim2.new(0, 90, 0, 90)
+Converted["_XesterLogo"].Name = "XesterLogo"
+Converted["_XesterLogo"].Parent = Converted["_Frame1"]
+
+Converted["_UICorner1"].Parent = Converted["_XesterLogo"]
+
+Converted["_Frame2"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame2"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame2"].BorderSizePixel = 0
+Converted["_Frame2"].Position = UDim2.new(0.351123601, 0, 0.0479041934, 0)
+Converted["_Frame2"].Size = UDim2.new(0, 222, 0, 110)
+Converted["_Frame2"].Parent = Converted["_Frame1"]
+
+Converted["_UICorner2"].Parent = Converted["_Frame2"]
+
+Converted["_Time"].Font = Enum.Font.SourceSansBold
+Converted["_Time"].Text = "Time :"
+Converted["_Time"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Time"].TextSize = 14
+Converted["_Time"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Time"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Time"].BorderSizePixel = 0
+Converted["_Time"].Position = UDim2.new(0.103603601, 0, 0.145454541, 0)
+Converted["_Time"].Size = UDim2.new(0, 175, 0, 40)
+Converted["_Time"].Name = "Time"
+Converted["_Time"].Parent = Converted["_Frame2"]
+function UpdateTime()
+    local GameTime = math.floor(workspace.DistributedGameTime+0.5)
+    local Hour = math.floor(GameTime/(60^2))%24
+    local Minute = math.floor(GameTime/(60^1))%60
+    local Second = math.floor(GameTime/(60^0))%60
+    Converted["_Time"].Text = "Hours : "..Hour.." Minute : "..Minute.." Second : "..Second
+    end
+    spawn(function()
+    while task.wait() do
+    pcall(function()
+    UpdateTime()
+    end)
+    end
+    end)
+
+Converted["_TextLabel"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel"].Text = "Your Beli : | Chest in server :"
+Converted["_TextLabel"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel"].TextSize = 14
+Converted["_TextLabel"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_TextLabel"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel"].BorderSizePixel = 0
+Converted["_TextLabel"].Position = UDim2.new(0.103603601, 0, 0.472727269, 0)
+Converted["_TextLabel"].Size = UDim2.new(0, 175, 0, 40)
+Converted["_TextLabel"].Parent = Converted["_Frame2"]
+
+Converted["_Frame3"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame3"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame3"].BorderSizePixel = 0
+Converted["_Frame3"].Position = UDim2.new(0.0337078646, 0, 0.688622773, 0)
+Converted["_Frame3"].Size = UDim2.new(0, 340, 0, 52)
+Converted["_Frame3"].Parent = Converted["_Frame1"]
+
+Converted["_UICorner3"].Parent = Converted["_Frame3"]
+
+Converted["_Frame4"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame4"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame4"].BorderSizePixel = 0
+Converted["_Frame4"].Position = UDim2.new(0.0617647059, 0, 0.0769230798, 0)
+Converted["_Frame4"].Size = UDim2.new(0, 120, 0, 43)
+Converted["_Frame4"].Parent = Converted["_Frame3"]
+
+Converted["_UICorner4"].Parent = Converted["_Frame4"]
+
+Converted["_Stop"].Font = Enum.Font.SourceSansBold
+Converted["_Stop"].Text = "On"
+Converted["_Stop"].TextColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Stop"].TextSize = 14
+Converted["_Stop"].BackgroundColor3 = Color3.fromRGB(220.00001728534698, 220.00001728534698, 220.00001728534698)
+Converted["_Stop"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Stop"].BorderSizePixel = 0
+Converted["_Stop"].Position = UDim2.new(-0.0166666675, 0, 0.0930232555, 0)
+Converted["_Stop"].Size = UDim2.new(0, 122, 0, 34)
+Converted["_Stop"].Name = "On"
+Converted["_Stop"].Parent = Converted["_Frame4"]
+Converted["_Stop"].MouseButton1Down:Connect(function()
+    AutoFarmChest = true
+end)
+
+Converted["_UICorner5"].Parent = Converted["_Stop"]
+
+Converted["_Frame5"].BackgroundColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame5"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Frame5"].BorderSizePixel = 0
+Converted["_Frame5"].Position = UDim2.new(0.579411745, 0, 0.0769230798, 0)
+Converted["_Frame5"].Size = UDim2.new(0, 120, 0, 43)
+Converted["_Frame5"].Parent = Converted["_Frame3"]
+
+Converted["_UICorner6"].Parent = Converted["_Frame5"]
+
+Converted["_Start"].Font = Enum.Font.SourceSansBold
+Converted["_Start"].Text = "Off"
+Converted["_Start"].TextColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Start"].TextSize = 14
+Converted["_Start"].BackgroundColor3 = Color3.fromRGB(220.00001728534698, 220.00001728534698, 220.00001728534698)
+Converted["_Start"].BorderColor3 = Color3.fromRGB(235, 16, 16)
+Converted["_Start"].BorderSizePixel = 0
+Converted["_Start"].Position = UDim2.new(-0.0166666675, 0, 0.0930232555, 0)
+Converted["_Start"].Size = UDim2.new(0, 122, 0, 34)
+Converted["_Start"].Name = "Off"
+Converted["_Start"].Parent = Converted["_Frame5"]
+Converted["_Start"].MouseButton1Down:Connect(function()
+    AutoFarmChest = false
+end)
+
+Converted["_UICorner7"].Parent = Converted["_Start"]
+
+Converted["_UICorner8"].Parent = Converted["_Frame"]
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            local count10 = 0
+            local count = 0
+            for i,v in pairs(game.workspace:GetChildren()) do
+                if string.find(v.Name,"Chest") and v:IsA("Part") then
+                    count10 = count10 + 1
+                end
+            end
+            Converted["_TextLabel"].Text = "Your Beli :".." "..game:GetService("Players").LocalPlayer.Data.Beli.Value.." | ".." Chest in server :".." "..count10
+        end)
+    end
+end)
+
+Converted["_TextLabel"].Parent = Converted["_TextLabel"]
+
+   
