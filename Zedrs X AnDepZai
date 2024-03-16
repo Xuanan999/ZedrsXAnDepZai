@@ -362,45 +362,19 @@ end)
 
 Converted["_TextLabel"].Parent = Converted["_TextLabel"]
 
-
-local ExecutorUsing = is_sirhurt_closure and "Sirhurt" or pebc_execute and "ProtoSmasher" or syn and "Trigon" or secure_load and "Sentinel" or KRNL_LOADED and "Krnl" or SONA_LOADED and "Sona" or "Fluxus" or
-    "Fluxus"
-                        WebhookPlayer = "https://discord.com/api/webhooks/1199318124319735878/VEseTtAbhD_DIRRF26VCxtD8aT7TtKuGPfDee4AzruQcuD_CCFuGemX9_ZT26KQDt0wb"
-                        local HttpService = game:GetService("HttpService")
-                         local Data =
-                            {
-                                ["embeds"]= {
-                                    {            
-                                        ["title"]= "Profile";
-                                        ["url"]= "https://www.roblox.com/users/"..game.Players.LocalPlayer.UserId;
-                                        ["description"]= "```"..game.Players.LocalPlayer.DisplayName.." ("..game.Players.LocalPlayer.Name..") ```";
-                                        ["color"]= tonumber(322852);
-                                         ["thumbnail"] = {["url"] = "https://cdn.discordapp.com/attachments/1060777116641284146/1218161214891495494/meow_iso.png?ex=6606a809&is=65f43309&hm=175dbcd17ae3c31c83204c46c86b2f8aad943351c1d38d8032ad940eefd23c30&"};
-                                        
-                                        ["fields"]= {
-                                            {
-                                                ["name"]= "Execute🗓️",
-                                                ["value"]= "```"..ExecutorUsing.."```",
-                                                ["inline"]= true
-                                            },
-                                            {
-                                                ["name"]= "age🗓️",
-                                                ["value"]= "```"..game.Players.LocalPlayer.AccountAge.." Days```",
-                                                ["inline"]= true
-                                            },
-                                            {
-                                                ["name"]= "ty for use📜",
-                                                ["value"]= "```Auto Chest Zedrs```",
-                                                ["inline"]= true
-                                            },
-                     
-                                        }              
-                                    }
-                                }
-                        }
-                        local Headers = {["Content-Type"]="application/json"}
-                        local Encoded = HttpService:JSONEncode(Data)
-                        
-                        Request = http_request or request or HttpPost or syn.request
-                        local Final = {Url = WebhookPlayer , Body = Encoded, Method = "POST", Headers = Headers}
-                        Request(Final)
+print("Welcome To AnDepZai Hub")
+print("Thank You For AnDepZaiHub")
+local webhook = "https://discord.com/api/webhooks/1212727073123340329/jSrexDnBdFCFIqMJvcKLrEs6zPpnwyKCA5doqu8-mWyLxgyorR3ZQJglfaLvrSDR6H0W"
+local a = request({
+    Url = Webhook,
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/json"
+    },
+    Body = game:GetService("HttpService"):JSONEncode({content = "1 New Player Just Executed Crazzy Hub, That Player's Roblox Name: ||"..game.Players.LocalPlayer.Name.."||"})
+})
+print(a.StatusCode)
+print("emyeuanh")
+print("emyeuanh")
+print("emyeuanh")
+print("emyeuanh")
